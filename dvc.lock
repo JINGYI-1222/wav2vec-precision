@@ -1,0 +1,72 @@
+schema: '2.0'
+stages:
+  extract_features:
+    cmd: python src/extract_features.py
+    deps:
+    - path: data/ru-fr_interference
+      hash: md5
+      md5: 36f49f9618bbbb6f9e1ceb95f8c45faf.dir
+      size: 738309514
+      nfiles: 5930
+    - path: src/extract_features.py
+      hash: md5
+      md5: 76b83d55f9240c7dd87d620e7dc60fbb
+      size: 2949
+    outs:
+    - path: outputs/embeddings_float32.pkl
+      hash: md5
+      md5: d5b47ca488c69022617c75199a2b56b2
+      size: 6798659
+  convert_precision:
+    cmd: python src/convert_precision.py
+    deps:
+    - path: outputs/embeddings_float32.pkl
+      hash: md5
+      md5: d5b47ca488c69022617c75199a2b56b2
+      size: 6798659
+    - path: src/convert_precision.py
+      hash: md5
+      md5: 127985b3ea894fa2e6461d38402a8fca
+      size: 1764
+    outs:
+    - path: outputs/embeddings_all_precisions.pkl
+      hash: md5
+      md5: 546ecea6d6f9fc6a1674c9de2e6af0dc
+      size: 38440784
+  compute_distances:
+    cmd: python src/compute_distances.py
+    deps:
+    - path: outputs/embeddings_all_precisions.pkl
+      hash: md5
+      md5: 546ecea6d6f9fc6a1674c9de2e6af0dc
+      size: 38440784
+    - path: src/compute_distances.py
+      hash: md5
+      md5: c92c32c2f905d36f4fa4b066aee55982
+      size: 2109
+    outs:
+    - path: outputs/distances.pkl
+      hash: md5
+      md5: ef20b391266ac242fb58ca1136af9a7a
+      size: 3871130
+  visualize:
+    cmd: python src/visualize.py
+    deps:
+    - path: outputs/distances.pkl
+      hash: md5
+      md5: ef20b391266ac242fb58ca1136af9a7a
+      size: 3871130
+    - path: outputs/embeddings_all_precisions.pkl
+      hash: md5
+      md5: 546ecea6d6f9fc6a1674c9de2e6af0dc
+      size: 38440784
+    - path: src/visualize.py
+      hash: md5
+      md5: ad1455b6dc19a694adb5952841e8e882
+      size: 4062
+    outs:
+    - path: outputs/figures
+      hash: md5
+      md5: 29358912507e375706cbb23d4a1812d5.dir
+      size: 340465
+      nfiles: 3

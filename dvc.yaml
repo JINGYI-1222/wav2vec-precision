@@ -1,0 +1,33 @@
+stages:
+  extract_features:
+    cmd: python src/extract_features.py
+    deps:
+      - src/extract_features.py
+      - data/ru-fr_interference
+    outs:
+      - outputs/embeddings_float32.pkl
+
+  convert_precision:
+    cmd: python src/convert_precision.py
+    deps:
+      - src/convert_precision.py
+      - outputs/embeddings_float32.pkl
+    outs:
+      - outputs/embeddings_all_precisions.pkl
+
+  compute_distances:
+    cmd: python src/compute_distances.py
+    deps:
+      - src/compute_distances.py
+      - outputs/embeddings_all_precisions.pkl
+    outs:
+      - outputs/distances.pkl
+
+  visualize:
+    cmd: python src/visualize.py
+    deps:
+      - src/visualize.py
+      - outputs/distances.pkl
+      - outputs/embeddings_all_precisions.pkl
+    outs:
+      - outputs/figures
